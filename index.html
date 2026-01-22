@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMCR Repair - Réparation & Nettoyage</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- VARIABLES --- */
+        :root {
+            --bleu-logo: #1a45b8;
+            --argent: #cfd8dc;
+            --argent-fonce: #90a4ae;
+            --blanc: #ffffff;
+            --gris-fond: #f8f9fa;
+            --texte: #2c3e50;
+            --accent: #ff9f1c; /* Orange Vif */
+        }
+
+        /* --- BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--texte);
+            line-height: 1.6;
+            background-color: var(--gris-fond);
+            overflow-x: hidden;
+        }
+
+        /* Animation d'apparition simple */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        img { max-width: 100%; height: auto; }
+        a { text-decoration: none; }
+        ul { list-style: none; }
+
+        /* --- NAVIGATION --- */
+        nav {
+            background: var(--blanc);
+            padding: 0 5%;
+            height: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--bleu-logo);
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo-container {
+            display: flex; align-items: center; gap: 10px;
+            font-weight: 700; font-size: 1.2rem; color: var(--bleu-logo); text-transform: uppercase;
+            z-index: 101;
+        }
+        .logo-img { height: 50px; }
+
+        .nav-links { display: flex; align-items: center; gap: 2rem; }
+        .nav-links li a { color: var(--texte); font-weight: 500; transition: 0.3s; position: relative; }
+        .nav-links li a:hover { color: var(--bleu-logo); }
+
+        /* --- LE BOUTON DU MENU (MODIFIÉ) --- */
+        .btn-header {
+            background: var(--accent); /* DEVENU ORANGE POUR LA VISIBILITÉ */
+            color: white !important; /* Force le texte en blanc */
+            padding: 0.7rem 1.5rem; /* Un peu plus épais */
+            border-radius: 50px;
+            font-weight: 700; /* Texte en GRAS */
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(255, 159, 28, 0.3); /* Légère ombre orange */
+        }
+        .btn-header:hover { 
+            background: #e68a00; /* Orange plus foncé au survol */
+            transform: scale(1.05); 
+        }
+
+        /* --- BURGER MENU ICON --- */
+        .burger { display: none; cursor: pointer; z-index: 101; }
+        .burger div {
+            width: 25px; height: 3px; background-color: var(--texte);
+            margin: 5px; transition: all 0.3s ease;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            background: radial-gradient(circle at center, #2c55db 0%, #0f2a7a 100%);
+            color: var(--blanc); padding: 4rem 5%;
+            display: flex; align-items: center; justify-content: space-between; min-height: 80vh;
+        }
+        .hero-content { flex: 1; padding-right: 2rem; }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 0 2px 4px rgba(0,0,0,0.3); line-height: 1.1; }
+        .hero-tagline { font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9; border-left: 4px solid var(--accent); padding-left: 15px; }
+        .hero-image-box { flex: 1; display: flex; justify-content: center; }
+        .hero-logo-display { width: 300px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
+
+        .btn-primary {
+            background: var(--accent); color: white; padding: 1rem 2rem; border-radius: 50px;
+            font-weight: bold; display: inline-block; transition: transform 0.2s, box-shadow 0.2s;
+            border-bottom: 3px solid #e68a00; cursor: pointer;
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255, 159, 28, 0.4); }
+
+        /* --- SECTIONS --- */
+        section { scroll-margin-top: 100px; }
+        .about-section, .services, .rdv-section, .tarifs-section { padding: 4rem 5%; }
+
+        /* A PROPOS */
+        .about-section {
+            background: white; display: flex; align-items: center; gap: 3rem;
+            border-radius: 20px; margin: 2rem 5%; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .about-photo { flex: 1; text-align: center; }
+        .photo-cadre {
+            width: 250px; height: 250px; border-radius: 50%; object-fit: cover;
+            border: 5px solid var(--argent); padding: 5px; background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15); transition: transform 0.3s;
+        }
+        .photo-cadre:hover { transform: scale(1.05) rotate(2deg); border-color: var(--accent); }
+        .about-text { flex: 2; }
+        .about-text h2 { color: var(--bleu-logo); margin-bottom: 1rem; font-size: 2rem; }
+
+        /* SERVICES */
+        .services { text-align: center; }
+        .cards-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3rem; }
+        .card {
+            background: var(--blanc); padding: 2.5rem 2rem; border-radius: 15px;
+            border: 1px solid var(--argent); border-bottom: 5px solid var(--bleu-logo);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: 0.3s;
+        }
+        .card:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .card h3 { margin-bottom: 10px; font-size: 1.5rem; color: var(--bleu-logo); }
+
+        /* TARIFS */
+        .tarifs-section { background: white; text-align: center; }
+        .price-cards-container { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-top: 3rem; }
+        .price-card {
+            background: var(--gris-fond); padding: 2rem; border-radius: 15px; border: 1px solid var(--argent);
+            width: 300px; transition: 0.3s; display: flex; flex-direction: column; align-items: center;
+        }
+        .price-card:hover { transform: scale(1.05); border-color: var(--accent); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .price-title { color: var(--texte); font-size: 1.3rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .price-tag { font-size: 3rem; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 1rem; }
+        .price-desc { font-size: 0.9rem; color: #666; border-top: 1px solid #ddd; padding-top: 1rem; width: 100%; }
+
+        /* FORMULAIRE */
+        .rdv-section { background-color: #f0f2f5; display: flex; flex-direction: column; align-items: center; }
+        .form-container {
+            background: white; padding: 3rem; border-radius: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            width: 100%; max-width: 700px; border-top: 6px solid var(--bleu-logo);
+        }
+        .form-row { display: flex; gap: 1.5rem; }
+        .form-row .form-group { flex: 1; }
+        .form-group { margin-bottom: 1.5rem; text-align: left; }
+        .form-label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--texte); }
+        .form-control {
+            width: 100%; padding: 15px; border: 2px solid var(--argent); border-radius: 8px; font-size: 1rem;
+            font-family: 'Poppins', sans-serif; transition: border-color 0.3s; background: #fafafa;
+        }
+        .form-control:focus { outline: none; border-color: var(--bleu-logo); background: white; }
+        input[type="file"]::file-selector-button {
+            margin-right: 20px; border: none; background: var(--bleu-logo); padding: 10px 20px; border-radius: 6px; color: white; cursor: pointer;
+        }
+
+        /* Preview photos */
+        #preview-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+        .preview-item { position: relative; width: 70px; height: 70px; border-radius: 6px; overflow: hidden; border: 2px solid var(--argent); }
+        .preview-item img { width: 100%; height: 100%; object-fit: cover; }
+        .preview-remove {
+            position: absolute; top: 2px; right: 2px; background: red; color: white; border: none; border-radius: 50%; width: 18px; height: 18px;
+            font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; line-height: 1;
+        }
+        textarea.form-control { resize: vertical; min-height: 120px; }
+
+        footer { background: #1e293b; color: white; padding: 4rem 5%; text-align: center; }
+        .footer-link { color: var(--argent); transition: color 0.3s; margin: 0 10px; display: inline-block; font-size: 1.1rem; }
+        .footer-link:hover { color: var(--accent); }
+
+        /* ========================================= */
+        /* RESPONSIVE (MOBILE) */
+        /* ========================================= */
+        @media (max-width: 900px) {
+            .burger { display: block; }
+            
+            .nav-links {
+                position: absolute; right: 0px; height: 100vh; top: 80px;
+                background-color: var(--blanc);
+                display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+                padding-top: 50px; width: 100%;
+                transform: translateX(100%); transition: transform 0.5s ease-in;
+                border-top: 1px solid var(--argent);
+            }
+            .nav-active { transform: translateX(0%); }
+            .nav-links li { opacity: 0; margin-bottom: 30px; }
+            
+            /* Sur mobile, on garde le bouton Orange aussi */
+            .btn-header { width: 80%; text-align: center; justify-content: center; display: flex; }
+            
+            .hero h1 { font-size: 2.5rem; }
+        }
+
+        .toggle .line1 { transform: rotate(-45deg) translate(-5px, 6px); }
+        .toggle .line2 { opacity: 0; }
+        .toggle .line3 { transform: rotate(45deg) translate(-5px, -6px); }
+
+        @keyframes navLinkFade {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @media (max-width: 768px) {
+            .hero { flex-direction: column-reverse; text-align: center; padding: 3rem 1.5rem; justify-content: center; }
+            .hero-content { padding-right: 0; margin-top: 2rem; }
+            .hero h1 { font-size: 2.2rem; } 
+            .hero-tagline { border-left: none; border-bottom: 4px solid var(--accent); padding-left: 0; padding-bottom: 15px; }
+            .hero-logo-display { width: 180px; }
+            
+            .about-section { flex-direction: column; text-align: center; margin: 2rem 0; width: 100%; border-radius: 0; }
+            .services, .rdv-section, .tarifs-section { padding: 3rem 1.5rem; }
+            .form-container { padding: 1.5rem; }
+            .form-row { flex-direction: column; gap: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo-container">
+            <img src="logo.png" alt="Logo AMCR" class="logo-img">
+            <span>AMCR REPAIR</span>
+        </div>
+        
+        <ul class="nav-links">
+            <li><a href="#">Accueil</a></li>
+            <li><a href="#about">À Propos</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#tarifs">Tarifs</a></li>
+            <li><a href="#devis" class="btn-header">Demander un Devis</a></li>
+        </ul>
+
+        <div class="burger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+    </nav>
+
+    <section class="hero reveal">
+        <div class="hero-content">
+            <h1>Réparation &<br>Entretien Multimédia</h1>
+            <p class="hero-tagline">
+                Un service complet pour vos appareils. Réparation précise, nettoyage soigné et conseils d'expert.
+            </p>
+            <a href="#devis" class="btn-primary">Demander un Devis</a>
+        </div>
+        <div class="hero-image-box">
+            <img src="logo.png" alt="Logo" class="hero-logo-display">
+        </div>
+    </section>
+
+    <section id="about" class="about-section reveal">
+        <div class="about-photo">
+            <img src="alex.jpg" alt="Alex AMCR Repair" class="photo-cadre">
+        </div>
+        <div class="about-text">
+            <h2>L'expert à votre service</h2>
+            <p>
+                Bonjour, je m'appelle Alex! Passionné par l'éléctronique et le soin des appareils, 
+                je propose une approche différente chez <strong>AMCR Repair</strong> : réparer pour durer.
+            </p>
+            <br>
+            <p><strong>Ma philosophie :</strong> Un appareil propre et bien entretenu est un appareil qui dure. Que ce soit pour changer un écran ou dépoussiérer une tour PC, je m'en occupe.</p>
+        </div>
+    </section>
+
+    <section id="services" class="services reveal">
+        <h2 style="color: var(--bleu-logo); font-size: 2.5rem;">Mes Services</h2>
+        <div class="cards-container">
+            <div class="card">
+                <h3>Réparation</h3>
+                <p>Diagnostic et réparation de pannes matérielles. Remplacement écran, batterie, composants.</p>
+            </div>
+            <div class="card">
+                <h3>Nettoyage</h3>
+                <p>Entretien hygiénique et dépoussiérage interne complet pour éviter la surchauffe.</p>
+            </div>
+            <div class="card">
+                <h3>Conseils</h3>
+                <p>Aide à l'achat, optimisation logicielle et astuces pour faire durer vos appareils.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="tarifs" class="tarifs-section reveal">
+        <h2 style="color: var(--bleu-logo); font-size: 2.5rem; margin-bottom: 1rem;">Tarifs Nettoyage</h2>
+        <p style="color: #666; margin-bottom: 1rem;">Un forfait clair pour redonner de l'éclat à vos appareils.</p>
+        
+        <div class="price-cards-container">
+            <div class="price-card">
+                <h3 class="price-title">Petits Objets</h3>
+                <div class="price-tag">6.-</div>
+                <div class="price-desc">
+                    <p>Écouteurs (AirPods...),</p>
+                    <p>Montres connectées,</p>
+                    <p>Clés de voiture...</p>
+                </div>
+            </div>
+            <div class="price-card">
+                <h3 class="price-title">Moyens</h3>
+                <div class="price-tag">13.-</div>
+                <div class="price-desc">
+                    <p>Smartphones,</p>
+                    <p>Tablettes,</p>
+                    <p>Manettes de jeu...</p>
+                </div>
+            </div>
+            <div class="price-card">
+                <h3 class="price-title">Grands</h3>
+                <div class="price-tag">22.-</div>
+                <div class="price-desc">
+                    <p>Ordinateurs Portables,</p>
+                    <p>Tours PC,</p>
+                    <p>Consoles de salon...</p>
+                </div>
+            </div>
+        </div>
+        <p style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.7;">* Pour les réparations, le prix est sur devis uniquement.</p>
+    </section>
+
+    <section id="devis" class="rdv-section reveal">
+        <h2 style="color: var(--bleu-logo); margin-bottom: 1rem; font-size: 2rem;">Demander un Devis Gratuit</h2>
+        <p style="margin-bottom: 2rem; color: #666; text-align: center;">Décrivez-moi votre problème, je vous envoie une estimation rapidement.</p>
+
+        <form class="form-container" action="https://formspree.io/f/xreeoapy" method="POST" enctype="multipart/form-data">
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="nom" class="form-label">Nom</label>
+                    <input type="text" name="nom" id="nom" class="form-control" placeholder="Votre nom" required>
+                </div>
+                <div class="form-group">
+                    <label for="prenom" class="form-label">Prénom</label>
+                    <input type="text" name="prenom" id="prenom" class="form-control" placeholder="Votre prénom" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="form-label">Votre Email</label>
+                <input type="email" name="email" id="email" class="form-control" placeholder="Pour recevoir le devis..." required>
+            </div>
+
+            <div class="form-group">
+                <label for="service-select" class="form-label">De quoi avez-vous besoin ?</label>
+                <select name="service" id="service-select" class="form-control" required>
+                    <option value="" disabled selected>Choisir une option...</option>
+                    <option value="Réparation">Demande de réparation</option>
+                    <option value="Nettoyage">Demande de nettoyage</option>
+                    <option value="Conseils">Autre demande</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="device-input" class="form-label">Quel est votre appareil ?</label>
+                <input type="text" name="appareil" id="device-input" class="form-control" placeholder="Ex: iPhone 13, PC Portable HP..." required>
+            </div>
+
+            <div class="form-group">
+                <label for="photo-upload" class="form-label">Photos de l'appareil (Pour un devis précis)</label>
+                <input type="file" name="photos" id="photo-upload" class="form-control" accept="image/*" multiple>
+                <p style="font-size: 0.8rem; color: #999; margin-top: 5px;">Ajoutez des photos des dégâts si possible.</p>
+                <div id="preview-container"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="details-input" class="form-label">Détails du problème</label>
+                <textarea name="message" id="details-input" class="form-control" placeholder="L'écran ne s'allume plus, la batterie chauffe..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%; border: none; font-size: 1.1rem;">Envoyer ma demande</button>
+        </form>
+    </section>
+
+    <footer>
+        <h3 style="margin-bottom: 1rem;">AMCR REPAIR</h3>
+        <p style="margin-bottom: 1.5rem;">
+            <a href="mailto:amcr.repair@gmail.com" class="footer-link">📧 amcr.repair@gmail.com</a>
+            <br style="display: block; margin: 5px 0;">
+            <a href="https://instagram.com/amcr.repair" target="_blank" class="footer-link">📷 @amcr.repair</a>
+        </p>
+        <p style="font-size: 0.8rem; opacity: 0.6;">&copy; 2026 AMCR Repair. Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        const burger = document.querySelector('.burger');
+        const nav = document.querySelector('.nav-links');
+        const navLinks = document.querySelectorAll('.nav-links li');
+
+        burger.addEventListener('click', () => {
+            nav.classList.toggle('nav-active');
+            navLinks.forEach((link, index) => {
+                if (link.style.animation) {
+                    link.style.animation = '';
+                } else {
+                    link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
+                }
+            });
+            burger.classList.toggle('toggle');
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('nav-active');
+                burger.classList.remove('toggle');
+                navLinks.forEach(link => link.style.animation = '');
+            });
+        });
+
+        // Photos logic
+        const fileInput = document.getElementById('photo-upload');
+        const container = document.getElementById('preview-container');
+        let currentFiles = new DataTransfer();
+
+        fileInput.addEventListener('change', function() {
+            const files = this.files;
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                currentFiles.items.add(file);
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function(e) {
+                    const div = document.createElement('div');
+                    div.className = 'preview-item';
+                    div.dataset.fileName = file.name; 
+                    div.innerHTML = `<img src="${e.target.result}" alt="${file.name}"><span class="preview-remove">&times;</span>`;
+                    div.querySelector('.preview-remove').addEventListener('click', function() {
+                        const nameToRemove = div.dataset.fileName;
+                        div.remove(); 
+                        const newDt = new DataTransfer();
+                        for (let j = 0; j < currentFiles.files.length; j++) {
+                            if (currentFiles.files[j].name !== nameToRemove) newDt.items.add(currentFiles.files[j]);
+                        }
+                        currentFiles = newDt; 
+                        fileInput.files = currentFiles.files; 
+                    });
+                    container.appendChild(div);
+                };
+            }
+            fileInput.files = currentFiles.files;
+        });
+
+        // Scroll Animation
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150; 
+                if (elementTop < windowHeight - elementVisible) reveals[i].classList.add("active");
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal();
+    </script>
+
+</body>
+</html>
