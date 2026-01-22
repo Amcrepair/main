@@ -70,18 +70,19 @@
         .nav-links li a { color: var(--texte); font-weight: 500; transition: 0.3s; position: relative; }
         .nav-links li a:hover { color: var(--bleu-logo); }
 
-        /* --- LE BOUTON DU MENU (MODIFIÉ) --- */
+        /* --- LE BOUTON DU MENU --- */
         .btn-header {
-            background: var(--accent); /* DEVENU ORANGE POUR LA VISIBILITÉ */
-            color: white !important; /* Force le texte en blanc */
-            padding: 0.7rem 1.5rem; /* Un peu plus épais */
+            background: var(--accent);
+            color: white !important;
+            padding: 0.7rem 1.5rem;
             border-radius: 50px;
-            font-weight: 700; /* Texte en GRAS */
+            font-weight: 700;
             transition: 0.3s;
-            box-shadow: 0 4px 10px rgba(255, 159, 28, 0.3); /* Légère ombre orange */
+            box-shadow: 0 4px 10px rgba(255, 159, 28, 0.3);
+            display: inline-block; /* Important pour le centrage */
         }
         .btn-header:hover { 
-            background: #e68a00; /* Orange plus foncé au survol */
+            background: #e68a00;
             transform: scale(1.05); 
         }
 
@@ -201,10 +202,23 @@
                 border-top: 1px solid var(--argent);
             }
             .nav-active { transform: translateX(0%); }
-            .nav-links li { opacity: 0; margin-bottom: 30px; }
             
-            /* Sur mobile, on garde le bouton Orange aussi */
-            .btn-header { width: 80%; text-align: center; justify-content: center; display: flex; }
+            /* C'est ICI qu'on assure le centrage */
+            .nav-links li { 
+                width: 100%; /* Le LI prend toute la largeur */
+                display: flex; 
+                justify-content: center; /* Centre le contenu du LI */
+                opacity: 0; 
+                margin-bottom: 30px; 
+            }
+            
+            /* Style spécifique pour le bouton sur mobile */
+            .btn-header { 
+                width: 80%; /* Largeur fixe */
+                max-width: 300px; /* Pas trop grand non plus */
+                text-align: center;
+                margin: 0 auto; /* Centrage de sécurité */
+            }
             
             .hero h1 { font-size: 2.5rem; }
         }
