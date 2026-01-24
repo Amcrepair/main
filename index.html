@@ -172,9 +172,21 @@
         }
         .form-control:focus { outline: none; border-color: var(--bleu-logo); background: white; }
         
-        input[type="file"]::file-selector-button {
-            margin-right: 20px; border: none; background: var(--bleu-logo); padding: 10px 20px; border-radius: 6px; color: white; cursor: pointer;
+        /* STYLE BOUTON UPLOAD PERSONNALISÉ */
+        .custom-file-upload {
+            display: inline-block;
+            background: var(--bleu-logo);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 5px;
+            transition: 0.3s;
         }
+        .custom-file-upload:hover { background: #153a9b; }
+        #photo-upload { display: none; } /* On cache le vrai input moche */
+
         
         /* Checkbox RGPD */
         .checkbox-container {
@@ -194,6 +206,9 @@
             position: absolute; top: 2px; right: 2px; background: red; color: white; border: none; border-radius: 50%; width: 18px; height: 18px;
             font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; line-height: 1;
         }
+        
+        /* Compteur de caractères */
+        #char-count { font-size: 0.8rem; color: #999; text-align: right; margin-top: 5px; }
         textarea.form-control { resize: vertical; min-height: 120px; }
 
         footer { background: #1e293b; color: white; padding: 4rem 5%; text-align: center; }
@@ -383,22 +398,27 @@
             </div>
 
             <div class="form-group">
-                <label for="photo-upload" class="form-label">Photos de l'appareil (Pour un devis précis)</label>
-                <input type="file" name="attachment" id="photo-upload" class="form-control" accept="image/*" multiple>
-                <p style="font-size: 0.8rem; color: #999; margin-top: 5px;">Ajoutez des photos (Max 2Mo recommandé par photo).</p>
+                <label class="form-label">Photos de l'appareil (Pour un devis précis)</label>
+                
+                <label for="photo-upload" class="custom-file-upload">
+                    ➕ Ajouter des photos
+                </label>
+                <input type="file" name="attachment" id="photo-upload" accept="image/*" multiple>
+                
+                <p style="font-size: 0.8rem; color: #999; margin-top: 5px;">Max 3 photos recommandées. (2Mo max)</p>
                 <div id="preview-container"></div>
             </div>
 
             <div class="form-group">
                 <label for="details-input" class="form-label">Détails du problème</label>
                 <textarea name="message" id="details-input" class="form-control" placeholder="L'écran ne s'allume plus, la batterie chauffe..." maxlength="500" required></textarea>
-                <p style="font-size: 0.7rem; color: #999; text-align: right;">Max 500 caractères</p>
+                <div id="char-count">0/500</div>
             </div>
 
             <div class="checkbox-container">
                 <input type="checkbox" id="rgpd-check" required>
                 <label for="rgpd-check" class="checkbox-label">
-                    J'accepte que mes données (nom, email, photos) soient utilisées uniquement pour traiter ma demande de devis. Elles ne seront pas partagées.
+                    J'accepte que mes données soient utilisées pour traiter ma demande.
                 </label>
             </div>
 
@@ -414,7 +434,7 @@
             <a href="https://instagram.com/amcr.repair" target="_blank" class="footer-link">📷 @amcr.repair</a>
         </p>
         <p style="font-size: 0.8rem; opacity: 0.6;">&copy; 2026 AMCR Repair. Tous droits réservés.</p>
-        <p class="legal-text">Protection des données : Vos informations personnelles sont strictement confidentielles et utilisées uniquement dans le cadre de la prestation.</p>
+        <p class="legal-text">Protection des données : Vos informations personnelles sont strictement confidentielles.</p>
     </footer>
 
     <script>
@@ -443,15 +463,28 @@
             });
         });
 
+        // --- GESTION COMPTEUR CARACTERES (0/500) ---
+        const textArea = document.getElementById('details-input');
+        const countDisplay = document.getElementById('char-count');
+        
+        textArea.addEventListener('input', function() {
+            const currentLength = this.value.length;
+            countDisplay.innerText = `${currentLength}/500`;
+            if(currentLength >= 500) {
+                countDisplay.style.color = "red";
+            } else {
+                countDisplay.style.color = "#999";
+            }
+        });
+
         // --- GESTION DES PHOTOS & SUJET DU MAIL ---
         const fileInput = document.getElementById('photo-upload');
         const container = document.getElementById('preview-container');
         const form = document.getElementById('repair-form');
         
-        // On initialise le DataTransfer pour stocker les fichiers
+        // Stockage sécurisé des fichiers
         let currentFiles = new DataTransfer();
 
-        // 1. Quand on ajoute des fichiers
         fileInput.addEventListener('change', function() {
             const files = this.files;
             
@@ -464,15 +497,14 @@
                 reader.onload = function(e) {
                     const div = document.createElement('div');
                     div.className = 'preview-item';
-                    div.dataset.fileName = file.name; // ID unique pour suppression
+                    div.dataset.fileName = file.name; 
                     div.innerHTML = `<img src="${e.target.result}" alt="${file.name}"><span class="preview-remove">&times;</span>`;
                     
-                    // Gestion suppression
+                    // Suppression
                     div.querySelector('.preview-remove').addEventListener('click', function() {
                         const nameToRemove = div.dataset.fileName;
                         div.remove(); 
                         
-                        // On recrée la liste sans le fichier supprimé
                         const newDt = new DataTransfer();
                         for (let j = 0; j < currentFiles.files.length; j++) {
                             if (currentFiles.files[j].name !== nameToRemove) {
@@ -480,25 +512,24 @@
                             }
                         }
                         currentFiles = newDt; 
-                        fileInput.files = currentFiles.files; // MISE A JOUR CRUCIALE DE L'INPUT
+                        fileInput.files = currentFiles.files; // Met à jour l'input réel
                     });
                     
                     container.appendChild(div);
                 };
             }
-            // Mise à jour de l'input avec tous les fichiers (nouveaux + anciens)
             fileInput.files = currentFiles.files;
         });
 
-        // 2. AVANT L'ENVOI : On change le titre du mail
+        // --- MISE A JOUR DU TITRE DU MAIL (Avant envoi) ---
         form.addEventListener('submit', function(e) {
             const nom = document.getElementById('nom').value.toUpperCase();
             const prenom = document.getElementById('prenom').value;
-            // On crée un ID unique basé sur l'heure (ex: #1435) pour éviter le groupement Gmail
+            // Génère un ID unique (ex: #143522) basé sur l'heure pour casser le fil de discussion Gmail
             const uniqueID = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(/:/g, '');
             
-            // On met à jour le champ caché _subject
             const subjectField = document.getElementById('email-subject');
+            // Exemple : Devis : DUPONT Jean - Ref#143522
             subjectField.value = `Devis : ${nom} ${prenom} - Ref#${uniqueID}`;
         });
 
