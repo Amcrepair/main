@@ -100,6 +100,7 @@
             border: 5px solid var(--argent); padding: 5px; background: white;
             box-shadow: 0 5px 15px rgba(0,0,0,0.15); transition: transform 0.3s;
         }
+        .photo-cadre:hover { transform: scale(1.05) rotate(2deg); border-color: var(--accent); }
         .about-text { flex: 2; }
         .about-text h2 { color: var(--bleu-logo); margin-bottom: 1rem; font-size: 2rem; }
 
@@ -138,38 +139,25 @@
         
         .form-label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--texte); }
         
-        /* Style unifié pour Inputs, Select et Textarea */
         .form-control {
             width: 100%; padding: 15px; border: 2px solid var(--argent); border-radius: 8px; font-size: 1rem;
             font-family: 'Poppins', sans-serif; transition: border-color 0.3s; background: #fafafa;
-            appearance: none; /* Retire le style par défaut des select */
+            appearance: none;
         }
         .form-control:focus { outline: none; border-color: var(--bleu-logo); background: white; }
         
-        /* Style spécifique pour Select (Flèche personnalisée) */
+        /* Select avec flèche */
         select.form-control {
             background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%231a45b8%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-            background-repeat: no-repeat;
-            background-position: right 15px top 50%;
-            background-size: 12px auto;
-            cursor: pointer;
+            background-repeat: no-repeat; background-position: right 15px top 50%; background-size: 12px auto; cursor: pointer;
         }
 
-        /* Classe d'erreur (Rouge) */
-        .form-control.error {
-            border-color: var(--erreur);
-            background-color: #fff8f8;
-            animation: shake 0.5s;
-        }
-        @keyframes shake {
-            0% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } 100% { transform: translateX(0); }
-        }
-
-        /* Message d'erreur texte */
+        /* Erreurs */
+        .form-control.error { border-color: var(--erreur); background-color: #fff8f8; animation: shake 0.5s; }
+        @keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } 100% { transform: translateX(0); } }
         .error-message { color: var(--erreur); font-size: 0.8rem; display: none; margin-top: 5px; }
         .form-group.show-error .error-message { display: block; }
 
-        /* Champ caché par défaut (Modèle) */
         #model-container { display: none; }
 
         /* Upload Photo */
@@ -189,7 +177,6 @@
             font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; line-height: 1;
         }
 
-        /* Checkbox RGPD */
         .checkbox-container { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 1.5rem; }
         .checkbox-container input { margin-top: 5px; transform: scale(1.2); cursor: pointer; flex-shrink: 0; }
         .checkbox-label { font-size: 0.9rem; color: #666; cursor: pointer; }
@@ -197,10 +184,10 @@
         textarea.form-control { resize: vertical; min-height: 120px; }
         #char-count { font-size: 0.8rem; color: #999; text-align: right; margin-top: 5px; }
 
-        /* LOADING OVERLAY */
+        /* LOADING */
         #loading-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.9); z-index: 9999;
+            background: rgba(255, 255, 255, 0.95); z-index: 9999;
             display: none; justify-content: center; align-items: center; flex-direction: column;
         }
         .spinner {
@@ -209,15 +196,12 @@
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* FOOTER & CONTACT */
+        /* FOOTER */
         footer { background: #1e293b; color: white; padding: 4rem 5%; text-align: center; }
-        
         .contact-highlight {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 2rem; border-radius: 15px; margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.1); padding: 2rem; border-radius: 15px; margin-bottom: 2rem;
             display: flex; flex-direction: column; gap: 1.5rem;
         }
-        
         .contact-item { font-size: 1.2rem; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .contact-icon { font-size: 1.5rem; color: var(--accent); }
         .footer-link { color: white; transition: 0.3s; font-weight: 600; }
@@ -260,8 +244,8 @@
 
     <div id="loading-overlay">
         <div class="spinner"></div>
-        <p style="font-weight: bold; color: var(--bleu-logo);">Envoi du devis en cours...</p>
-        <p style="font-size: 0.9rem;">(Cela peut prendre quelques secondes pour les photos)</p>
+        <p style="font-weight: bold; color: var(--bleu-logo);">Optimisation des photos et envoi...</p>
+        <p style="font-size: 0.9rem;">Veuillez patienter (ça va vite !)</p>
     </div>
 
     <nav>
@@ -269,7 +253,6 @@
             <img src="logo.png" alt="Logo AMCR" class="logo-img">
             <span>AMCR REPAIR</span>
         </div>
-        
         <ul class="nav-links">
             <li><a href="#">Accueil</a></li>
             <li><a href="#about">À Propos</a></li>
@@ -277,8 +260,7 @@
             <li><a href="#tarifs">Tarifs</a></li>
             <li><a href="#devis" class="btn-header">Demander un Devis</a></li>
         </ul>
-
-        <div class="burger">
+        <div class="burger" aria-label="Menu">
             <div class="line1"></div>
             <div class="line2"></div>
             <div class="line3"></div>
@@ -294,18 +276,18 @@
             <a href="#devis" class="btn-primary">Demander un Devis</a>
         </div>
         <div class="hero-image-box">
-            <img src="logo.png" alt="Logo" class="hero-logo-display">
+            <img src="logo.png" alt="Logo AMCR Repair" class="hero-logo-display">
         </div>
     </section>
 
     <section id="about" class="about-section reveal">
         <div class="about-photo">
-            <img src="alex.jpg" alt="Alex AMCR Repair" class="photo-cadre">
+            <img src="alex.jpg" alt="Alex - Technicien AMCR Repair" class="photo-cadre">
         </div>
         <div class="about-text">
             <h2>L'expert à votre service</h2>
             <p>
-                Bonjour, je m'appelle Alex! Passionné par l'éléctronique et le soin des appareils, 
+                Bonjour, je m'appelle Alex! Passionné par l'électronique et le soin des appareils, 
                 je propose une approche différente chez <strong>AMCR Repair</strong> : réparer pour durer.
             </p>
             <br>
@@ -334,7 +316,6 @@
     <section id="tarifs" class="tarifs-section reveal">
         <h2 style="color: var(--bleu-logo); font-size: 2.5rem; margin-bottom: 1rem;">Tarifs Nettoyage</h2>
         <p style="color: #666; margin-bottom: 1rem;">Un forfait clair pour redonner de l'éclat à vos appareils.</p>
-        
         <div class="price-cards-container">
             <div class="price-card">
                 <h3 class="price-title">Petits Objets</h3>
@@ -371,12 +352,8 @@
         <h2 style="color: var(--bleu-logo); margin-bottom: 1rem; font-size: 2rem;">Demander un Devis Gratuit</h2>
         <p style="margin-bottom: 2rem; color: #666; text-align: center;">Décrivez-moi votre problème, je vous envoie une estimation rapidement.</p>
 
-        <form class="form-container" id="repair-form" action="https://formsubmit.co/amcr.repair@gmail.com" method="POST" enctype="multipart/form-data" novalidate>
+        <form class="form-container" id="repair-form" novalidate>
             
-            <input type="hidden" name="_subject" id="email-subject" value="Nouvelle demande de devis">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_template" value="table">
-
             <div class="form-row">
                 <div class="form-group">
                     <label for="nom" class="form-label">Nom</label>
@@ -423,8 +400,8 @@
                 <label for="photo-upload" class="custom-file-upload">
                     <i class="fas fa-camera"></i> Ajouter des photos
                 </label>
-                <input type="file" name="attachment[]" id="photo-upload" accept="image/*" multiple>
-                <p style="font-size: 0.8rem; color: #999; margin-top: 5px;">Max 3 photos (2 Mo max par photo).</p>
+                <input type="file" id="photo-upload" accept="image/*" multiple>
+                <p style="font-size: 0.8rem; color: #999; margin-top: 5px;">Max 3 photos.</p>
                 <div id="preview-container"></div>
             </div>
 
@@ -449,7 +426,6 @@
 
     <footer>
         <h3 style="margin-bottom: 2rem;">AMCR REPAIR</h3>
-        
         <div class="contact-highlight">
             <div class="contact-item">
                 <i class="fas fa-envelope contact-icon"></i>
@@ -460,13 +436,12 @@
                 <a href="https://instagram.com/amcr.repair" target="_blank" class="footer-link">@amcr.repair</a>
             </div>
         </div>
-
         <p style="font-size: 0.8rem; opacity: 0.6;">&copy; 2026 AMCR Repair. Tous droits réservés.</p>
         <p class="legal-text">Protection des données : Vos informations personnelles sont strictement confidentielles.</p>
     </footer>
 
     <script>
-        // --- BURGER MENU ---
+        // --- NAVIGATION ---
         const burger = document.querySelector('.burger');
         const nav = document.querySelector('.nav-links');
         const navLinks = document.querySelectorAll('.nav-links li');
@@ -474,11 +449,7 @@
         burger.addEventListener('click', () => {
             nav.classList.toggle('nav-active');
             navLinks.forEach((link, index) => {
-                if (link.style.animation) {
-                    link.style.animation = '';
-                } else {
-                    link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
-                }
+                link.style.animation = link.style.animation ? '' : `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
             });
             burger.classList.toggle('toggle');
         });
@@ -491,89 +462,107 @@
             });
         });
 
-        // --- GESTION COMPTEUR CARACTERES ---
-        const textArea = document.getElementById('details-input');
-        const countDisplay = document.getElementById('char-count');
-        textArea.addEventListener('input', function() {
-            countDisplay.innerText = `${this.value.length}/500`;
+        // --- UX FORMS ---
+        document.getElementById('details-input').addEventListener('input', function() {
+            document.getElementById('char-count').innerText = `${this.value.length}/500`;
         });
 
-        // --- AFFICHAGE CONDITIONNEL MODELE ---
-        const serviceSelect = document.getElementById('service-select');
-        const modelContainer = document.getElementById('model-container');
-        
-        serviceSelect.addEventListener('change', function() {
-            if (this.value === "Reparation") {
-                modelContainer.style.display = "block";
-            } else {
-                modelContainer.style.display = "none";
-            }
+        document.getElementById('service-select').addEventListener('change', function() {
+            document.getElementById('model-container').style.display = this.value === "Reparation" ? "block" : "none";
         });
 
-        // --- GESTION DES PHOTOS (Limite taille + nombre) ---
+        // --- GESTION INTELLIGENTE DES PHOTOS (COMPRESSION) ---
         const fileInput = document.getElementById('photo-upload');
         const container = document.getElementById('preview-container');
-        let currentFiles = new DataTransfer();
+        let filesToUpload = []; // Stocke les fichiers traités
 
-        fileInput.addEventListener('change', function() {
-            // Vérification limite nombre total (3 max)
-            if (currentFiles.files.length + this.files.length > 3) {
-                alert("Vous ne pouvez envoyer que 3 photos maximum.");
+        fileInput.addEventListener('change', async function() {
+            if (filesToUpload.length + this.files.length > 3) {
+                alert("Maximum 3 photos autorisées.");
                 return;
             }
 
-            for (let i = 0; i < this.files.length; i++) {
-                const file = this.files[i];
-                
-                // Vérification taille (2 Mo max)
-                if (file.size > 2 * 1024 * 1024) {
-                    alert(`La photo ${file.name} est trop lourde (Max 2 Mo). Elle a été ignorée.`);
-                    continue;
-                }
-
-                currentFiles.items.add(file);
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = function(e) {
-                    const div = document.createElement('div');
-                    div.className = 'preview-item';
-                    div.dataset.fileName = file.name; 
-                    div.innerHTML = `<img src="${e.target.result}" alt="${file.name}"><span class="preview-remove">&times;</span>`;
+            for (let file of this.files) {
+                // Compression de l'image
+                try {
+                    const compressedFile = await compressImage(file);
+                    filesToUpload.push(compressedFile);
                     
-                    div.querySelector('.preview-remove').addEventListener('click', function() {
-                        const nameToRemove = div.dataset.fileName;
-                        div.remove(); 
-                        const newDt = new DataTransfer();
-                        for (let j = 0; j < currentFiles.files.length; j++) {
-                            if (currentFiles.files[j].name !== nameToRemove) newDt.items.add(currentFiles.files[j]);
-                        }
-                        currentFiles = newDt; 
-                        fileInput.files = currentFiles.files; 
-                    });
-                    container.appendChild(div);
-                };
+                    // Affichage preview
+                    const reader = new FileReader();
+                    reader.readAsDataURL(compressedFile);
+                    reader.onload = function(e) {
+                        const div = document.createElement('div');
+                        div.className = 'preview-item';
+                        div.innerHTML = `<img src="${e.target.result}" alt="Preview"><span class="preview-remove">&times;</span>`;
+                        
+                        div.querySelector('.preview-remove').addEventListener('click', function() {
+                            // On supprime le fichier du tableau
+                            filesToUpload = filesToUpload.filter(f => f !== compressedFile);
+                            div.remove();
+                        });
+                        container.appendChild(div);
+                    };
+                } catch (error) {
+                    console.error("Erreur compression", error);
+                    alert("Erreur lors du traitement d'une image.");
+                }
             }
-            fileInput.files = currentFiles.files;
+            // Reset input pour permettre de ré-ajouter les mêmes fichiers si besoin
+            this.value = ''; 
         });
 
-        // --- VALIDATION CUSTOM + TITRE MAIL + LOADING ---
+        // Fonction de compression
+        function compressImage(file) {
+            return new Promise((resolve, reject) => {
+                const maxWidth = 1000; // Largeur max
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > maxWidth) {
+                            height *= maxWidth / width;
+                            width = maxWidth;
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        canvas.toBlob((blob) => {
+                            const newFile = new File([blob], file.name, { type: 'image/jpeg', lastModified: Date.now() });
+                            resolve(newFile);
+                        }, 'image/jpeg', 0.7); // Qualité 70%
+                    };
+                    img.onerror = reject;
+                };
+                reader.onerror = reject;
+            });
+        }
+
+        // --- ENVOI DU FORMULAIRE VIA AJAX (FETCH) ---
         const form = document.getElementById('repair-form');
         const loadingOverlay = document.getElementById('loading-overlay');
 
         form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 1. Validation
             let isValid = true;
             let firstError = null;
-
-            // Réinitialiser les erreurs
             document.querySelectorAll('.form-control').forEach(el => {
                 el.classList.remove('error');
-                if(el.parentElement.classList.contains('form-group')) {
-                    el.parentElement.classList.remove('show-error');
-                }
+                if(el.parentElement.classList.contains('form-group')) el.parentElement.classList.remove('show-error');
             });
             document.getElementById('checkbox-error').style.display = 'none';
 
-            // 1. Validation Champs Requis
             const requiredFields = form.querySelectorAll('[required]');
             requiredFields.forEach(field => {
                 if (!field.value.trim() && field.type !== 'checkbox') {
@@ -590,25 +579,49 @@
             });
 
             if (!isValid) {
-                e.preventDefault();
-                // Scroll vers la première erreur
                 firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            } else {
-                // Si tout est bon :
-                // A. Afficher le Loading
-                loadingOverlay.style.display = 'flex';
-
-                // B. Générer Titre Mail Unique
-                const nom = document.getElementById('nom').value.toUpperCase();
-                const prenom = document.getElementById('prenom').value;
-                const uniqueID = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(/:/g, '');
-                document.getElementById('email-subject').value = `Devis : ${nom} ${prenom} - Ref#${uniqueID}`;
-                
-                // Formulaire envoyé normalement (la page changera vers FormSubmit)
+                return;
             }
+
+            // 2. Préparation de l'envoi
+            loadingOverlay.style.display = 'flex';
+            
+            const formData = new FormData(form);
+            
+            // Ajout du sujet dynamique
+            const nom = document.getElementById('nom').value.toUpperCase();
+            const prenom = document.getElementById('prenom').value;
+            const uniqueID = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(/:/g, '');
+            formData.set('_subject', `Devis : ${nom} ${prenom} - Ref#${uniqueID}`);
+            
+            // Ajout des fichiers compressés manuellement au FormData
+            // On supprime d'abord les fichiers potentiels du input original (qui sont vides ou trop gros)
+            formData.delete('attachment'); 
+            
+            filesToUpload.forEach(file => {
+                formData.append('attachment', file);
+            });
+
+            // 3. Envoi via fetch
+            fetch("https://formsubmit.co/amcr.repair@gmail.com", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                loadingOverlay.style.display = 'none';
+                alert("Votre demande de devis a bien été envoyée ! Je vous recontacte très vite.");
+                form.reset();
+                filesToUpload = [];
+                document.getElementById('preview-container').innerHTML = '';
+                document.getElementById('char-count').innerText = '0/500';
+            })
+            .catch(error => {
+                loadingOverlay.style.display = 'none';
+                alert("Une erreur est survenue lors de l'envoi. Veuillez réessayer.");
+                console.error(error);
+            });
         });
 
-        // --- SCROLL ANIMATION ---
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
