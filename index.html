@@ -29,6 +29,8 @@
             font-family: 'Poppins', sans-serif; color: var(--texte); line-height: 1.6;
             background-color: var(--gris-fond); width: 100%; overflow-x: hidden; position: relative;
         }
+        
+        body.no-scroll { overflow: hidden; }
 
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
@@ -42,13 +44,13 @@
             background: var(--blanc); padding: 0 5%; height: 80px;
             display: flex; justify-content: space-between; align-items: center;
             border-bottom: 3px solid var(--bleu-logo);
-            position: sticky; top: 0; z-index: 100;
+            position: sticky; top: 0; z-index: 999;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05); width: 100%;
         }
 
         .logo-container {
             display: flex; align-items: center; gap: 10px;
-            font-weight: 700; font-size: 1.2rem; color: var(--bleu-logo); text-transform: uppercase; z-index: 101;
+            font-weight: 700; font-size: 1.2rem; color: var(--bleu-logo); text-transform: uppercase; z-index: 1001;
         }
         .logo-img { height: 50px; }
 
@@ -63,7 +65,7 @@
         }
         .btn-header:hover { background: #e68a00; transform: scale(1.05); }
 
-        .burger { display: none; cursor: pointer; z-index: 101; }
+        .burger { display: none; cursor: pointer; z-index: 1001; }
         .burger div { width: 25px; height: 3px; background-color: var(--texte); margin: 5px; transition: all 0.3s ease; }
 
         /* --- HERO --- */
@@ -146,13 +148,11 @@
         }
         .form-control:focus { outline: none; border-color: var(--bleu-logo); background: white; }
         
-        /* Select avec flèche */
         select.form-control {
             background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%231a45b8%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
             background-repeat: no-repeat; background-position: right 15px top 50%; background-size: 12px auto; cursor: pointer;
         }
 
-        /* Erreurs */
         .form-control.error { border-color: var(--erreur); background-color: #fff8f8; animation: shake 0.5s; }
         @keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } 100% { transform: translateX(0); } }
         .error-message { color: var(--erreur); font-size: 0.8rem; display: none; margin-top: 5px; }
@@ -160,7 +160,6 @@
 
         #model-container { display: none; }
 
-        /* Upload Photo */
         .custom-file-upload {
             display: inline-block; background: var(--bleu-logo); color: white;
             padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600;
@@ -184,7 +183,6 @@
         textarea.form-control { resize: vertical; min-height: 120px; }
         #char-count { font-size: 0.8rem; color: #999; text-align: right; margin-top: 5px; }
 
-        /* LOADING */
         #loading-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255, 255, 255, 0.95); z-index: 9999;
@@ -196,7 +194,6 @@
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* FOOTER */
         footer { background: #1e293b; color: white; padding: 4rem 5%; text-align: center; }
         .contact-highlight {
             background: rgba(255, 255, 255, 0.1); padding: 2rem; border-radius: 15px; margin-bottom: 2rem;
@@ -208,24 +205,54 @@
         .footer-link:hover { color: var(--accent); text-decoration: underline; }
         .legal-text { font-size: 0.7rem; color: #777; margin-top: 2rem; }
 
-        /* MOBILE */
+        /* ========================================= */
+        /* RESPONSIVE (MOBILE) - MENU DESIGN BLEU */
+        /* ========================================= */
         @media (max-width: 900px) {
             .burger { display: block; }
+            
+            /* LE MENU MOBILE (MODIFIÉ) */
             .nav-links {
-                position: absolute; right: 0; height: 100vh; top: 80px; background-color: var(--blanc);
+                position: fixed; /* Fixé à l'écran */
+                top: 80px; left: 0;
+                height: calc(100vh - 80px); width: 100%;
+                
+                /* DEGRADÉ BLEU ROI */
+                background: linear-gradient(160deg, var(--bleu-logo) 0%, #0a1f5c 100%);
+                
                 display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-                padding-top: 50px; width: 100%; max-width: 100vw;
-                transform: translateX(100%); transition: transform 0.5s ease-in;
-                border-top: 1px solid var(--argent); overflow-x: hidden;
+                padding-top: 50px;
+                transform: translateX(100%); transition: transform 0.4s ease-in-out;
+                border-top: 1px solid var(--argent);
+                overflow-y: auto;
             }
+            
             .nav-active { transform: translateX(0%); }
-            .nav-links li { width: 100%; display: flex; justify-content: center; opacity: 0; margin-bottom: 30px; }
+            
+            /* Liens plus gros et blancs */
+            .nav-links li { 
+                width: 100%; display: flex; justify-content: center; 
+                opacity: 0; margin-bottom: 30px; 
+            }
+            
+            .nav-links li a {
+                font-size: 1.3rem; /* Texte plus grand */
+                color: white; /* Blanc sur fond bleu */
+            }
+            .nav-links li a:hover { color: var(--accent); } /* Orange au survol */
+            
             .btn-header { width: 80%; max-width: 300px; text-align: center; margin: 0 auto; }
             .hero h1 { font-size: 2.5rem; }
         }
+        
         .toggle .line1 { transform: rotate(-45deg) translate(-5px, 6px); }
         .toggle .line2 { opacity: 0; }
         .toggle .line3 { transform: rotate(45deg) translate(-5px, -6px); }
+
+        @keyframes navLinkFade {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
 
         @media (max-width: 768px) {
             .hero { flex-direction: column-reverse; text-align: center; padding: 3rem 1.5rem; justify-content: center; }
@@ -253,6 +280,7 @@
             <img src="logo.png" alt="Logo AMCR" class="logo-img">
             <span>AMCR REPAIR</span>
         </div>
+        
         <ul class="nav-links">
             <li><a href="#">Accueil</a></li>
             <li><a href="#about">À Propos</a></li>
@@ -260,6 +288,7 @@
             <li><a href="#tarifs">Tarifs</a></li>
             <li><a href="#devis" class="btn-header">Demander un Devis</a></li>
         </ul>
+
         <div class="burger" aria-label="Menu">
             <div class="line1"></div>
             <div class="line2"></div>
@@ -352,8 +381,14 @@
         <h2 style="color: var(--bleu-logo); margin-bottom: 1rem; font-size: 2rem;">Demander un Devis Gratuit</h2>
         <p style="margin-bottom: 2rem; color: #666; text-align: center;">Décrivez-moi votre problème, je vous envoie une estimation rapidement.</p>
 
-        <form class="form-container" id="repair-form" novalidate>
+        <form class="form-container" id="repair-form" action="https://formsubmit.co/amcr.repair@gmail.com" method="POST" novalidate>
             
+            <input type="hidden" name="_subject" id="email-subject" value="Nouvelle demande de devis">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="table">
+            
+            <input type="hidden" name="liens_photos" id="photo-links-field">
+
             <div class="form-row">
                 <div class="form-group">
                     <label for="nom" class="form-label">Nom</label>
@@ -377,9 +412,9 @@
                 <label for="service-select" class="form-label">De quoi avez-vous besoin ?</label>
                 <select name="service" id="service-select" class="form-control" required>
                     <option value="" disabled selected>Choisir une option...</option>
-                    <option value="Reparation">🛠️ Demande de réparation</option>
-                    <option value="Nettoyage">✨ Demande de nettoyage</option>
-                    <option value="Conseils">💡 Autre demande</option>
+                    <option value="Reparation">Réparation</option>
+                    <option value="Nettoyage">Nettoyage</option>
+                    <option value="Conseils">Autre demande</option>
                 </select>
                 <div class="error-message">Veuillez choisir un service.</div>
             </div>
@@ -401,7 +436,7 @@
                     <i class="fas fa-camera"></i> Ajouter des photos
                 </label>
                 <input type="file" id="photo-upload" accept="image/*" multiple>
-                <p style="font-size: 0.8rem; color: #999; margin-top: 5px;">Max 3 photos.</p>
+                <p style="font-size: 0.8rem; color: #999; margin-top: 5px;">Max 3 photos (2 Mo max par photo).</p>
                 <div id="preview-container"></div>
             </div>
 
@@ -441,13 +476,13 @@
     </footer>
 
     <script>
-        // --- NAVIGATION ---
         const burger = document.querySelector('.burger');
         const nav = document.querySelector('.nav-links');
         const navLinks = document.querySelectorAll('.nav-links li');
 
         burger.addEventListener('click', () => {
             nav.classList.toggle('nav-active');
+            document.body.classList.toggle('no-scroll');
             navLinks.forEach((link, index) => {
                 link.style.animation = link.style.animation ? '' : `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
             });
@@ -457,65 +492,75 @@
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
                 nav.classList.remove('nav-active');
+                document.body.classList.remove('no-scroll');
                 burger.classList.remove('toggle');
                 navLinks.forEach(link => link.style.animation = '');
             });
         });
 
-        // --- UX FORMS ---
-        document.getElementById('details-input').addEventListener('input', function() {
-            document.getElementById('char-count').innerText = `${this.value.length}/500`;
+        const textArea = document.getElementById('details-input');
+        const countDisplay = document.getElementById('char-count');
+        textArea.addEventListener('input', function() {
+            countDisplay.innerText = `${this.value.length}/500`;
         });
 
-        document.getElementById('service-select').addEventListener('change', function() {
-            document.getElementById('model-container').style.display = this.value === "Reparation" ? "block" : "none";
+        const serviceSelect = document.getElementById('service-select');
+        const modelContainer = document.getElementById('model-container');
+        
+        serviceSelect.addEventListener('change', function() {
+            modelContainer.style.display = this.value === "Reparation" ? "block" : "none";
         });
 
-        // --- GESTION INTELLIGENTE DES PHOTOS (COMPRESSION) ---
         const fileInput = document.getElementById('photo-upload');
         const container = document.getElementById('preview-container');
-        let filesToUpload = []; // Stocke les fichiers traités
+        let uploadedFiles = [];
 
         fileInput.addEventListener('change', async function() {
-            if (filesToUpload.length + this.files.length > 3) {
+            const files = Array.from(this.files);
+            if (uploadedFiles.length + files.length > 3) {
                 alert("Maximum 3 photos autorisées.");
                 return;
             }
 
-            for (let file of this.files) {
-                // Compression de l'image
+            for (let file of files) {
+                if (file.size > 2 * 1024 * 1024) {
+                    alert(`${file.name} est trop lourd (Max 2 Mo).`);
+                    continue;
+                }
+
                 try {
                     const compressedFile = await compressImage(file);
-                    filesToUpload.push(compressedFile);
+                    const preview = await createPreview(compressedFile);
+                    uploadedFiles.push({ file: compressedFile, preview });
+
+                    const div = document.createElement('div');
+                    div.className = 'preview-item';
+                    div.innerHTML = `<img src="${preview}" alt="${file.name}"><span class="preview-remove">&times;</span>`;
                     
-                    // Affichage preview
-                    const reader = new FileReader();
-                    reader.readAsDataURL(compressedFile);
-                    reader.onload = function(e) {
-                        const div = document.createElement('div');
-                        div.className = 'preview-item';
-                        div.innerHTML = `<img src="${e.target.result}" alt="Preview"><span class="preview-remove">&times;</span>`;
-                        
-                        div.querySelector('.preview-remove').addEventListener('click', function() {
-                            // On supprime le fichier du tableau
-                            filesToUpload = filesToUpload.filter(f => f !== compressedFile);
-                            div.remove();
-                        });
-                        container.appendChild(div);
-                    };
-                } catch (error) {
-                    console.error("Erreur compression", error);
-                    alert("Erreur lors du traitement d'une image.");
+                    div.querySelector('.preview-remove').addEventListener('click', function() {
+                        uploadedFiles = uploadedFiles.filter(f => f.file !== compressedFile);
+                        div.remove();
+                    });
+                    
+                    container.appendChild(div);
+                } catch (e) {
+                    console.error("Erreur compression", e);
                 }
             }
-            // Reset input pour permettre de ré-ajouter les mêmes fichiers si besoin
-            this.value = ''; 
+            this.value = '';
         });
 
-        // Fonction de compression
+        function createPreview(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.readAsDataURL(file);
+            });
+        }
+
         function compressImage(file) {
             return new Promise((resolve, reject) => {
-                const maxWidth = 1000; // Largeur max
+                const maxWidth = 1000;
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
                 reader.onload = function(event) {
@@ -525,21 +570,18 @@
                         const canvas = document.createElement('canvas');
                         let width = img.width;
                         let height = img.height;
-
                         if (width > maxWidth) {
                             height *= maxWidth / width;
                             width = maxWidth;
                         }
-
                         canvas.width = width;
                         canvas.height = height;
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
-
                         canvas.toBlob((blob) => {
                             const newFile = new File([blob], file.name, { type: 'image/jpeg', lastModified: Date.now() });
                             resolve(newFile);
-                        }, 'image/jpeg', 0.7); // Qualité 70%
+                        }, 'image/jpeg', 0.7);
                     };
                     img.onerror = reject;
                 };
@@ -547,19 +589,32 @@
             });
         }
 
-        // --- ENVOI DU FORMULAIRE VIA AJAX (FETCH) ---
+        async function uploadToImgur(file) {
+            const formData = new FormData();
+            formData.append('image', file);
+            const response = await fetch('https://api.imgur.com/3/upload', {
+                method: 'POST',
+                headers: { 'Authorization': 'Client-ID 546c25a59c58ad7' },
+                body: formData
+            });
+            const data = await response.json();
+            return data.data.link;
+        }
+
         const form = document.getElementById('repair-form');
         const loadingOverlay = document.getElementById('loading-overlay');
 
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // 1. Validation
             let isValid = true;
             let firstError = null;
+
             document.querySelectorAll('.form-control').forEach(el => {
                 el.classList.remove('error');
-                if(el.parentElement.classList.contains('form-group')) el.parentElement.classList.remove('show-error');
+                if(el.parentElement.classList.contains('form-group')) {
+                    el.parentElement.classList.remove('show-error');
+                }
             });
             document.getElementById('checkbox-error').style.display = 'none';
 
@@ -578,48 +633,43 @@
                 }
             });
 
+            const emailField = document.getElementById('email');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailField.value && !emailRegex.test(emailField.value)) {
+                isValid = false;
+                emailField.classList.add('error');
+                emailField.parentElement.classList.add('show-error');
+                if (!firstError) firstError = emailField;
+            }
+
             if (!isValid) {
                 firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
             }
 
-            // 2. Préparation de l'envoi
-            loadingOverlay.style.display = 'flex';
-            
-            const formData = new FormData(form);
-            
-            // Ajout du sujet dynamique
+            // Upload des photos
+            if (uploadedFiles.length > 0) {
+                loadingOverlay.style.display = 'flex';
+                const photoLinks = [];
+
+                for (let item of uploadedFiles) {
+                    try {
+                        const link = await uploadToImgur(item.file);
+                        photoLinks.push(link);
+                    } catch (error) {
+                        console.error('Erreur upload:', error);
+                    }
+                }
+
+                document.getElementById('photo-links-field').value = photoLinks.join(' | ');
+            }
+
             const nom = document.getElementById('nom').value.toUpperCase();
             const prenom = document.getElementById('prenom').value;
-            const uniqueID = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(/:/g, '');
-            formData.set('_subject', `Devis : ${nom} ${prenom} - Ref#${uniqueID}`);
-            
-            // Ajout des fichiers compressés manuellement au FormData
-            // On supprime d'abord les fichiers potentiels du input original (qui sont vides ou trop gros)
-            formData.delete('attachment'); 
-            
-            filesToUpload.forEach(file => {
-                formData.append('attachment', file);
-            });
+            const timestamp = Date.now();
+            document.getElementById('email-subject').value = `Devis ${nom} ${prenom} #${timestamp}`;
 
-            // 3. Envoi via fetch
-            fetch("https://formsubmit.co/amcr.repair@gmail.com", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => {
-                loadingOverlay.style.display = 'none';
-                alert("Votre demande de devis a bien été envoyée ! Je vous recontacte très vite.");
-                form.reset();
-                filesToUpload = [];
-                document.getElementById('preview-container').innerHTML = '';
-                document.getElementById('char-count').innerText = '0/500';
-            })
-            .catch(error => {
-                loadingOverlay.style.display = 'none';
-                alert("Une erreur est survenue lors de l'envoi. Veuillez réessayer.");
-                console.error(error);
-            });
+            form.submit();
         });
 
         function reveal() {
