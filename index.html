@@ -30,7 +30,12 @@
             background-color: var(--gris-fond); width: 100%; overflow-x: hidden; position: relative;
         }
         
-        body.no-scroll { overflow: hidden; }
+        /* CORRECTION SCROLL MOBILE */
+        body.no-scroll, html.no-scroll { 
+            overflow: hidden !important; 
+            height: 100% !important;
+            touch-action: none; /* Empêche le scroll tactile */
+        }
 
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
@@ -128,20 +133,11 @@
         .price-title { color: var(--texte); font-size: 1.3rem; font-weight: 600; margin-bottom: 0.5rem; }
         .price-tag { font-size: 3rem; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 0.5rem; }
         
-        /* NOUVEAU STYLE POUR LA DURÉE */
         .price-duration {
-            font-size: 0.9rem;
-            color: var(--bleu-logo);
-            font-weight: 600;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(26, 69, 184, 0.1); /* Fond bleu très léger */
-            padding: 5px 15px;
-            border-radius: 20px;
+            font-size: 0.9rem; color: var(--bleu-logo); font-weight: 600; margin-bottom: 1rem;
+            display: flex; align-items: center; gap: 8px;
+            background: rgba(26, 69, 184, 0.1); padding: 5px 15px; border-radius: 20px;
         }
-
         .price-desc { font-size: 0.9rem; color: #666; border-top: 1px solid #ddd; padding-top: 1rem; width: 100%; }
 
         /* FORMULAIRE & INPUTS */
@@ -191,9 +187,9 @@
             font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; line-height: 1;
         }
 
-        .checkbox-container { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 1.5rem; }
+        .checkbox-container { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 1rem; }
         .checkbox-container input { margin-top: 5px; transform: scale(1.2); cursor: pointer; flex-shrink: 0; }
-        .checkbox-label { font-size: 0.9rem; color: #666; cursor: pointer; }
+        .checkbox-label { font-size: 0.85rem; color: #666; cursor: pointer; line-height: 1.4; }
 
         textarea.form-control { resize: vertical; min-height: 120px; }
         #char-count { font-size: 0.8rem; color: #999; text-align: right; margin-top: 5px; }
@@ -226,6 +222,7 @@
         @media (max-width: 900px) {
             .burger { display: block; }
             
+            /* MENU MOBILE FIXÉ */
             .nav-links {
                 position: fixed; top: 80px; left: 0;
                 height: calc(100vh - 80px); width: 100%;
@@ -468,15 +465,22 @@
                     J'accepte que mes données soient utilisées pour traiter ma demande.
                 </label>
             </div>
-            <div class="error-message" id="checkbox-error" style="margin-bottom: 1rem;">Vous devez accepter les conditions.</div>
+
+            <div class="checkbox-container">
+                <input type="checkbox" id="abandon-check" required>
+                <label for="abandon-check" class="checkbox-label">
+                    Je reconnais que tout appareil non réclamé <strong>3 mois</strong> après notification de fin de travaux sera considéré comme abandonné (destruction ou revente).
+                </label>
+            </div>
+
+            <div class="error-message" id="checkbox-error" style="margin-bottom: 1rem;">Vous devez accepter toutes les conditions.</div>
 
             <button type="submit" class="btn-primary" style="width: 100%; border: none; font-size: 1.1rem;">Envoyer ma demande</button>
         </form>
     </section>
 
-<footer>
+    <footer>
         <h3 style="margin-bottom: 2rem;">AMCR REPAIR</h3>
-        
         <div class="contact-highlight">
             <div class="contact-item">
                 <i class="fas fa-envelope contact-icon"></i>
@@ -487,17 +491,8 @@
                 <a href="https://instagram.com/amcr.repair" target="_blank" class="footer-link">@amcr.repair</a>
             </div>
         </div>
-
         <p style="font-size: 0.8rem; opacity: 0.6;">&copy; 2026 AMCR Repair. Tous droits réservés.</p>
-        
-        <div style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
-            <p class="legal-text" style="color: #aaa; margin-bottom: 10px;">
-                <strong>Protection des données :</strong> Vos informations sont strictement confidentielles.
-            </p>
-            <p class="legal-text" style="color: #aaa; font-size: 0.75rem; line-height: 1.4; max-width: 600px; margin: 0 auto;">
-                <strong>Politique d'abandon (Genève) :</strong> Conformément aux usages, tout appareil non réclamé dans un délai de <strong>6 mois</strong> après notification de fin de travaux (par email ou SMS) sera considéré comme abandonné. Passé ce délai, AMCR Repair se réserve le droit d'en disposer (recyclage, destruction ou revente pour couvrir les frais) sans dédommagement possible.
-            </p>
-        </div>
+        <p class="legal-text">Protection des données : Vos informations personnelles sont strictement confidentielles.</p>
     </footer>
 
     <script>
@@ -505,11 +500,11 @@
         const nav = document.querySelector('.nav-links');
         const navLinks = document.querySelectorAll('.nav-links li');
 
-        // AJOUT DES CLASSES DE BLOCAGE SCROLL
+        // AJOUT DES CLASSES DE BLOCAGE SCROLL (FIXE)
         burger.addEventListener('click', () => {
             nav.classList.toggle('nav-active');
-            document.body.classList.toggle('stop-scrolling');
-            document.documentElement.classList.toggle('stop-scrolling');
+            document.body.classList.toggle('no-scroll');
+            document.documentElement.classList.toggle('no-scroll'); // Important pour iOS
             
             navLinks.forEach((link, index) => {
                 link.style.animation = link.style.animation ? '' : `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
@@ -520,8 +515,8 @@
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
                 nav.classList.remove('nav-active');
-                document.body.classList.remove('stop-scrolling');
-                document.documentElement.classList.remove('stop-scrolling');
+                document.body.classList.remove('no-scroll');
+                document.documentElement.classList.remove('no-scroll');
                 burger.classList.remove('toggle');
                 navLinks.forEach(link => link.style.animation = '');
             });
@@ -636,14 +631,17 @@
             });
             document.getElementById('checkbox-error').style.display = 'none';
 
+            // VALIDATION DES CHAMPS REQUIS ET DES CHECKBOXES
             const requiredFields = form.querySelectorAll('[required]');
             requiredFields.forEach(field => {
+                // Validation inputs texte
                 if (!field.value.trim() && field.type !== 'checkbox') {
                     isValid = false;
                     field.classList.add('error');
                     field.parentElement.classList.add('show-error');
                     if (!firstError) firstError = field;
                 }
+                // Validation checkbox (RGPD + Abandon)
                 if (field.type === 'checkbox' && !field.checked) {
                     isValid = false;
                     document.getElementById('checkbox-error').style.display = 'block';
@@ -705,4 +703,3 @@
 
 </body>
 </html>
-
