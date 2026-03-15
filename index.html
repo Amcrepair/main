@@ -30,11 +30,7 @@
             background-color: var(--gris-fond); width: 100%; overflow-x: hidden; position: relative;
         }
         
-        body.no-scroll, html.no-scroll { 
-            overflow: hidden !important; 
-            height: 100% !important;
-            touch-action: none; 
-        }
+        body.no-scroll { overflow: hidden; } /* Juste ça pour bloquer le scroll mobile sans casser la fluidité */
 
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
@@ -117,6 +113,7 @@
             background: var(--blanc); padding: 2.5rem 2rem; border-radius: 15px;
             border: 1px solid var(--argent); border-bottom: 5px solid var(--bleu-logo);
             box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: 0.3s;
+            cursor: pointer; /* Ajout du curseur pour indiquer que c'est cliquable */
         }
         .card:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
         .card h3 { margin-bottom: 10px; font-size: 1.5rem; color: var(--bleu-logo); }
@@ -127,6 +124,7 @@
         .price-card {
             background: var(--gris-fond); padding: 2rem; border-radius: 15px; border: 1px solid var(--argent);
             width: 300px; transition: 0.3s; display: flex; flex-direction: column; align-items: center;
+            cursor: pointer; /* Ajout du curseur */
         }
         .price-card:hover { transform: scale(1.05); border-color: var(--accent); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         .price-title { color: var(--texte); font-size: 1.3rem; font-weight: 600; margin-bottom: 0.5rem; }
@@ -218,10 +216,10 @@
             .nav-links {
                 position: fixed; top: 80px; left: 0;
                 height: calc(100vh - 80px); width: 100%;
-                background: linear-gradient(160deg, var(--bleu-logo) 0%, #0a1f5c 100%);
+                background-color: var(--blanc);
                 display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
                 padding-top: 50px;
-                transform: translateX(100%); transition: transform 0.4s ease-in-out;
+                transform: translateX(100%); transition: transform 0.5s ease-in;
                 border-top: 1px solid var(--argent);
                 overflow-y: auto;
             }
@@ -232,9 +230,6 @@
                 width: 100%; display: flex; justify-content: center; 
                 opacity: 0; margin-bottom: 30px; 
             }
-            
-            .nav-links li a { font-size: 1.3rem; color: white; }
-            .nav-links li a:hover { color: var(--accent); } 
             
             .btn-header { width: 80%; max-width: 300px; text-align: center; margin: 0 auto; }
             .hero h1 { font-size: 2.5rem; }
@@ -322,15 +317,15 @@
     <section id="services" class="services reveal">
         <h2 style="color: var(--bleu-logo); font-size: 2.5rem;">Mes Services</h2>
         <div class="cards-container">
-            <div class="card">
+            <div class="card" onclick="selectService('Reparation')">
                 <h3>Réparation</h3>
                 <p>Diagnostic et réparation de pannes matérielles. Remplacement écran, batterie, composants.</p>
             </div>
-            <div class="card">
+            <div class="card" onclick="selectService('Nettoyage')">
                 <h3>Nettoyage</h3>
                 <p>Entretien hygiénique et dépoussiérage interne complet pour éviter la surchauffe.</p>
             </div>
-            <div class="card">
+            <div class="card" onclick="selectService('Conseils')">
                 <h3>Conseils</h3>
                 <p>Aide à l'achat, optimisation logicielle et astuces pour faire durer vos appareils.</p>
             </div>
@@ -339,8 +334,10 @@
 
     <section id="tarifs" class="tarifs-section reveal">
         <h2 style="color: var(--bleu-logo); font-size: 2.5rem; margin-bottom: 1rem;">Tarifs Nettoyage</h2>
+        <p style="color: #666; margin-bottom: 1rem;">Un forfait clair pour redonner de l'éclat à vos appareils.</p>
+        
         <div class="price-cards-container">
-            <div class="price-card">
+            <div class="price-card" onclick="selectService('Nettoyage', 'petit nettoyage')">
                 <h3 class="price-title">Petits Objets</h3>
                 <div class="price-tag">6.-</div>
                 <div class="price-desc">
@@ -349,7 +346,7 @@
                     <p>Clés de voiture...</p>
                 </div>
             </div>
-            <div class="price-card">
+            <div class="price-card" onclick="selectService('Nettoyage', 'nettoyage moyen')">
                 <h3 class="price-title">Moyens</h3>
                 <div class="price-tag">13.-</div>
                 <div class="price-desc">
@@ -358,7 +355,7 @@
                     <p>Manettes de jeu...</p>
                 </div>
             </div>
-            <div class="price-card">
+            <div class="price-card" onclick="selectService('Nettoyage', 'grand nettoyage')">
                 <h3 class="price-title">Grands</h3>
                 <div class="price-tag">22.-</div>
                 <div class="price-desc">
@@ -383,7 +380,6 @@
             <input type="hidden" name="_subject" id="email-subject" value="Nouvelle demande de devis">
             <input type="hidden" name="_captcha" value="false">
             <input type="hidden" name="_template" value="table">
-            
             <input type="hidden" name="liens_photos" id="photo-links-field">
 
             <div class="form-row">
@@ -458,7 +454,7 @@
                 </label>
             </div>
             
-            <div class="error-message" id="checkbox-error" style="margin-bottom: 1rem;">Vous devez accepter toutes les conditions avant d'envoyer.</div>
+            <div class="error-message" id="checkbox-error" style="margin-bottom: 1rem;">Vous devez accepter toutes les conditions.</div>
 
             <button type="submit" class="btn-primary" style="width: 100%; border: none; font-size: 1.1rem;">Envoyer ma demande</button>
         </form>
@@ -466,6 +462,7 @@
 
     <footer>
         <h3 style="margin-bottom: 2rem;">AMCR REPAIR</h3>
+        
         <div class="contact-highlight">
             <div class="contact-item">
                 <i class="fas fa-envelope contact-icon"></i>
@@ -476,6 +473,7 @@
                 <a href="https://instagram.com/amcr.repair" target="_blank" class="footer-link">@amcr.repair</a>
             </div>
         </div>
+
         <p style="font-size: 0.8rem; opacity: 0.6;">&copy; 2026 AMCR Repair. Tous droits réservés.</p>
         
         <div style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
@@ -489,15 +487,35 @@
     </footer>
 
     <script>
+        // --- FONCTION DE PRÉ-REMPLISSAGE LORS DU CLIC SUR UNE CARTE ---
+        function selectService(serviceValue, detailNettoyage = '') {
+            // 1. Défiler jusqu'au formulaire
+            document.getElementById('devis').scrollIntoView({ behavior: 'smooth' });
+            
+            // 2. Sélectionner le bon choix dans le menu déroulant
+            const select = document.getElementById('service-select');
+            select.value = serviceValue;
+            
+            // 3. Déclencher le changement pour faire apparaître "Modèle" si c'est réparation
+            select.dispatchEvent(new Event('change'));
+
+            // 4. Si on clique sur "Petits objets" par exemple, on met un message pré-écrit
+            if (detailNettoyage !== '') {
+                const textarea = document.getElementById('details-input');
+                textarea.value = "Demande pour un " + detailNettoyage + ".\n\n";
+                // Mettre à jour le compteur de caractères
+                document.getElementById('char-count').innerText = `${textarea.value.length}/500`;
+            }
+        }
+
+        // --- NAVIGATION BURGER ET SCROLL LOCK ---
         const burger = document.querySelector('.burger');
         const nav = document.querySelector('.nav-links');
         const navLinks = document.querySelectorAll('.nav-links li');
 
-        // AJOUT DES CLASSES DE BLOCAGE SCROLL
         burger.addEventListener('click', () => {
             nav.classList.toggle('nav-active');
-            document.body.classList.toggle('stop-scrolling');
-            document.documentElement.classList.toggle('stop-scrolling');
+            document.body.classList.toggle('no-scroll');
             
             navLinks.forEach((link, index) => {
                 link.style.animation = link.style.animation ? '' : `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
@@ -508,13 +526,13 @@
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
                 nav.classList.remove('nav-active');
-                document.body.classList.remove('stop-scrolling');
-                document.documentElement.classList.remove('stop-scrolling');
+                document.body.classList.remove('no-scroll');
                 burger.classList.remove('toggle');
                 navLinks.forEach(link => link.style.animation = '');
             });
         });
 
+        // --- FORMULAIRE DYNAMIQUE ---
         const textArea = document.getElementById('details-input');
         const countDisplay = document.getElementById('char-count');
         textArea.addEventListener('input', function() {
@@ -528,6 +546,7 @@
             modelContainer.style.display = this.value === "Reparation" ? "block" : "none";
         });
 
+        // --- GESTION DES PHOTOS ET ENVOI ---
         const fileInput = document.getElementById('photo-upload');
         const container = document.getElementById('preview-container');
         let filesToUpload = []; 
@@ -653,7 +672,6 @@
                 return;
             }
 
-            // Upload des photos
             if (filesToUpload.length > 0) {
                 loadingOverlay.style.display = 'flex';
                 const photoLinks = [];
@@ -666,7 +684,6 @@
                         console.error('Erreur upload:', error);
                     }
                 }
-
                 document.getElementById('photo-links-field').value = photoLinks.join(' | ');
             }
 
@@ -693,4 +710,5 @@
 
 </body>
 </html>
+
 
