@@ -30,11 +30,10 @@
             background-color: var(--gris-fond); width: 100%; overflow-x: hidden; position: relative;
         }
         
-        /* CORRECTION SCROLL MOBILE */
         body.no-scroll, html.no-scroll { 
             overflow: hidden !important; 
             height: 100% !important;
-            touch-action: none; /* Empêche le scroll tactile */
+            touch-action: none; 
         }
 
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
@@ -131,13 +130,7 @@
         }
         .price-card:hover { transform: scale(1.05); border-color: var(--accent); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         .price-title { color: var(--texte); font-size: 1.3rem; font-weight: 600; margin-bottom: 0.5rem; }
-        .price-tag { font-size: 3rem; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 0.5rem; }
-        
-        .price-duration {
-            font-size: 0.9rem; color: var(--bleu-logo); font-weight: 600; margin-bottom: 1rem;
-            display: flex; align-items: center; gap: 8px;
-            background: rgba(26, 69, 184, 0.1); padding: 5px 15px; border-radius: 20px;
-        }
+        .price-tag { font-size: 3rem; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 1rem; }
         .price-desc { font-size: 0.9rem; color: #666; border-top: 1px solid #ddd; padding-top: 1rem; width: 100%; }
 
         /* FORMULAIRE & INPUTS */
@@ -222,7 +215,6 @@
         @media (max-width: 900px) {
             .burger { display: block; }
             
-            /* MENU MOBILE FIXÉ */
             .nav-links {
                 position: fixed; top: 80px; left: 0;
                 height: calc(100vh - 80px); width: 100%;
@@ -347,14 +339,10 @@
 
     <section id="tarifs" class="tarifs-section reveal">
         <h2 style="color: var(--bleu-logo); font-size: 2.5rem; margin-bottom: 1rem;">Tarifs Nettoyage</h2>
-        <p style="color: #666; margin-bottom: 1rem;">Un forfait clair pour redonner de l'éclat à vos appareils.</p>
         <div class="price-cards-container">
             <div class="price-card">
                 <h3 class="price-title">Petits Objets</h3>
                 <div class="price-tag">6.-</div>
-                <div class="price-duration">
-                    <i class="far fa-clock"></i> Env. 15 min
-                </div>
                 <div class="price-desc">
                     <p>Écouteurs (AirPods...),</p>
                     <p>Montres connectées,</p>
@@ -364,9 +352,6 @@
             <div class="price-card">
                 <h3 class="price-title">Moyens</h3>
                 <div class="price-tag">13.-</div>
-                <div class="price-duration">
-                    <i class="far fa-clock"></i> Env. 30 min
-                </div>
                 <div class="price-desc">
                     <p>Smartphones,</p>
                     <p>Tablettes,</p>
@@ -376,9 +361,6 @@
             <div class="price-card">
                 <h3 class="price-title">Grands</h3>
                 <div class="price-tag">22.-</div>
-                <div class="price-duration">
-                    <i class="far fa-clock"></i> Env. 1h
-                </div>
                 <div class="price-desc">
                     <p>Ordinateurs Portables,</p>
                     <p>Tours PC,</p>
@@ -386,7 +368,10 @@
                 </div>
             </div>
         </div>
-        <p style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.7;">* Pour les réparations, le prix est sur devis uniquement.</p>
+        <p style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.8; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.6; text-align: center;">
+            * <strong>Nettoyage :</strong> Les tarifs indiqués s'appliquent pour un encrassement standard. Si l'appareil nécessite un nettoyage en profondeur ou un démontage complexe en raison d'une saleté excessive, le prix pourra être ajusté (vous en serez informé avant intervention).<br>
+            * <strong>Réparation :</strong> Le prix se fait sur devis uniquement.
+        </p>
     </section>
 
     <section id="devis" class="rdv-section reveal">
@@ -465,15 +450,15 @@
                     J'accepte que mes données soient utilisées pour traiter ma demande.
                 </label>
             </div>
-
+            
             <div class="checkbox-container">
                 <input type="checkbox" id="abandon-check" required>
                 <label for="abandon-check" class="checkbox-label">
                     Je reconnais que tout appareil non réclamé <strong>3 mois</strong> après notification de fin de travaux sera considéré comme abandonné (destruction ou revente).
                 </label>
             </div>
-
-            <div class="error-message" id="checkbox-error" style="margin-bottom: 1rem;">Vous devez accepter toutes les conditions.</div>
+            
+            <div class="error-message" id="checkbox-error" style="margin-bottom: 1rem;">Vous devez accepter toutes les conditions avant d'envoyer.</div>
 
             <button type="submit" class="btn-primary" style="width: 100%; border: none; font-size: 1.1rem;">Envoyer ma demande</button>
         </form>
@@ -492,7 +477,15 @@
             </div>
         </div>
         <p style="font-size: 0.8rem; opacity: 0.6;">&copy; 2026 AMCR Repair. Tous droits réservés.</p>
-        <p class="legal-text">Protection des données : Vos informations personnelles sont strictement confidentielles.</p>
+        
+        <div style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
+            <p class="legal-text" style="color: #aaa; margin-bottom: 10px;">
+                <strong>Protection des données :</strong> Vos informations sont strictement confidentielles.
+            </p>
+            <p class="legal-text" style="color: #aaa; font-size: 0.75rem; line-height: 1.4; max-width: 600px; margin: 0 auto;">
+                <strong>Politique d'abandon (Genève) :</strong> Conformément aux usages, tout appareil non réclamé dans un délai de <strong>3 mois</strong> après notification de fin de travaux (par email ou SMS) sera considéré comme abandonné. Passé ce délai, AMCR Repair se réserve le droit d'en disposer (recyclage, destruction ou revente pour couvrir les frais) sans dédommagement possible.
+            </p>
+        </div>
     </footer>
 
     <script>
@@ -500,11 +493,11 @@
         const nav = document.querySelector('.nav-links');
         const navLinks = document.querySelectorAll('.nav-links li');
 
-        // AJOUT DES CLASSES DE BLOCAGE SCROLL (FIXE)
+        // AJOUT DES CLASSES DE BLOCAGE SCROLL
         burger.addEventListener('click', () => {
             nav.classList.toggle('nav-active');
-            document.body.classList.toggle('no-scroll');
-            document.documentElement.classList.toggle('no-scroll'); // Important pour iOS
+            document.body.classList.toggle('stop-scrolling');
+            document.documentElement.classList.toggle('stop-scrolling');
             
             navLinks.forEach((link, index) => {
                 link.style.animation = link.style.animation ? '' : `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
@@ -515,8 +508,8 @@
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
                 nav.classList.remove('nav-active');
-                document.body.classList.remove('no-scroll');
-                document.documentElement.classList.remove('no-scroll');
+                document.body.classList.remove('stop-scrolling');
+                document.documentElement.classList.remove('stop-scrolling');
                 burger.classList.remove('toggle');
                 navLinks.forEach(link => link.style.animation = '');
             });
@@ -631,17 +624,14 @@
             });
             document.getElementById('checkbox-error').style.display = 'none';
 
-            // VALIDATION DES CHAMPS REQUIS ET DES CHECKBOXES
             const requiredFields = form.querySelectorAll('[required]');
             requiredFields.forEach(field => {
-                // Validation inputs texte
                 if (!field.value.trim() && field.type !== 'checkbox') {
                     isValid = false;
                     field.classList.add('error');
                     field.parentElement.classList.add('show-error');
                     if (!firstError) firstError = field;
                 }
-                // Validation checkbox (RGPD + Abandon)
                 if (field.type === 'checkbox' && !field.checked) {
                     isValid = false;
                     document.getElementById('checkbox-error').style.display = 'block';
@@ -703,3 +693,4 @@
 
 </body>
 </html>
+
