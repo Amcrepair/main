@@ -58,14 +58,15 @@
         }
         .logo-img { height: 50px; }
 
-        .nav-links { display: flex; align-items: center; gap: 2rem; }
+        /* ESPACEMENT AJUSTÉ POUR PC */
+        .nav-links { display: flex; align-items: center; gap: 2.5rem; }
         .nav-links li a { color: var(--texte); font-weight: 500; transition: 0.3s; position: relative; }
         .nav-links li a:hover { color: var(--bleu-logo); }
 
         .btn-header {
             background: var(--accent); color: white !important; padding: 0.7rem 1.5rem;
             border-radius: 50px; font-weight: 700; transition: 0.3s;
-            box-shadow: 0 4px 10px rgba(255, 159, 28, 0.3); display: inline-block;
+            box-shadow: 0 4px 10px rgba(255, 159, 28, 0.3); display: inline-flex; align-items: center; justify-content: center;
         }
         .btn-header:hover { background: #e68a00; transform: scale(1.05); }
 
@@ -86,8 +87,8 @@
 
         .btn-primary {
             background: var(--accent); color: white; padding: 1rem 2rem; border-radius: 50px;
-            font-weight: bold; display: inline-block; transition: transform 0.2s, box-shadow 0.2s;
-            border-bottom: 3px solid #e68a00; cursor: pointer;
+            font-weight: bold; display: inline-flex; align-items: center; justify-content: center; transition: transform 0.2s, box-shadow 0.2s;
+            border-bottom: 3px solid #e68a00; cursor: pointer; text-align: center;
         }
         .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255, 159, 28, 0.4); }
 
@@ -210,7 +211,7 @@
         .legal-text { font-size: 0.7rem; color: #777; margin-top: 2rem; }
 
         /* ========================================= */
-        /* RESPONSIVE (MOBILE) - MENU DÉROULANT BLEU */
+        /* RESPONSIVE (MOBILE) */
         /* ========================================= */
         @media (max-width: 900px) {
             .burger { display: block; }
@@ -218,8 +219,7 @@
             .nav-links {
                 position: fixed; top: 80px; left: 0;
                 height: calc(100vh - 80px); width: 100%;
-                /* Retour du dégradé bleu royal comme tu l'as demandé */
-                background: linear-gradient(160deg, var(--bleu-logo) 0%, #0a1f5c 100%) !important;
+                background: linear-gradient(160deg, var(--bleu-logo) 0%, #0a1f5c 100%);
                 display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
                 padding-top: 50px;
                 transform: translateX(100%); transition: transform 0.4s ease-in-out;
@@ -234,9 +234,8 @@
                 opacity: 0; margin-bottom: 30px; 
             }
             
-            /* Texte en blanc pour bien ressortir sur le bleu */
-            .nav-links li a { font-size: 1.3rem; color: white !important; }
-            .nav-links li a:hover { color: var(--accent) !important; } 
+            .nav-links li a { font-size: 1.3rem; color: white; }
+            .nav-links li a:hover { color: var(--accent); } 
             
             .btn-header { width: 80%; max-width: 300px; text-align: center; margin: 0 auto; }
             .hero h1 { font-size: 2.5rem; }
@@ -491,6 +490,12 @@
     </footer>
 
     <script>
+        // --- RETOUR EN HAUT AUTOMATIQUE AU CHARGEMENT ---
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+
         const burger = document.querySelector('.burger');
         const nav = document.querySelector('.nav-links');
         const navLinks = document.querySelectorAll('.nav-links li');
